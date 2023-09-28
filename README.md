@@ -29,15 +29,13 @@ With features such as Patch Management,Port Protection,Firewall Configuration Ma
      - Implemented by using `systemctl` command. 
 
 - User and Group Management: Implement the principle of least privilege. Create separate user accounts for administrative tasks and regular usage.Remove or lock default and unused user accounts.
-     - Implemented with `ufw` utility software
+     - Implemented with basic linux commands.
 
 - Password Policies: Enforce strong password policies using tools like Pluggable Authentication Modules (PAM). Require complex passwords and set password expiration
-     - Implemented with `ufw` utility software
-
--File Encryption : 
+     - Implemented with `libpam-cracklib` and `lipam - pwquality` utility software
 
 - Audit Logging: Enable and configure audit logging to monitor system activities and detect suspicious behavior.
-     - Implemented with `ufw` utility software
+     - Implemented with `auditd` utility software
 
 
 
@@ -161,5 +159,92 @@ Enter the new file permissions:
 >>>644
 File permissions changed for 'file1.txt' to 644.
 ```
-Service Management
+Service Management is designed such that services which are inactive for a certain time frame are disabled.
+User interacts with the GUI for Service Management:
 
+```
+>>>
+Disabling <service_name> (Inactive for <days_since_activation> days)...
+Disabling <another_service_name> (Inactive for <days_since_activation> days)...
+...
+Disabling <last_service_name> (Inactive for <days_since_activation> days)...
+Service management complete.
+
+```
+
+User and Group Management is responsible for the several management tasks of differnet users and groups, such as such as creating user accounts, removing or locking default user accounts, and locking unused user accounts.  
+User interacts with the GUI for User and Group Management:
+```
+>>>
+Creating administrative user account: adminuser
+Changing password for user adminuser.
+New password:
+Retype new password:
+passwd: password updated successfully
+Adding user `adminuser' to group `sudo' ...
+Adding user adminuser to group sudo
+Done.
+
+Creating regular user account: regularuser
+Changing password for user regularuser.
+New password:
+Retype new password:
+passwd: password updated successfully
+
+Removing default user account: guest
+userdel: user 'guest' does not exist
+Removing default user account: user1
+userdel: user 'user1' does not exist
+Removing default user account: user2
+userdel: user 'user2' does not exist
+
+Locking unused user account: unuseduser1
+passwd: password expiry information changed.
+Locking unused user account: unuseduser2
+passwd: password expiry information changed.
+
+Cleaning up temporary files
+User and group management completed.
+
+```
+
+
+Password Policies is to enforce and manage strong password policies.  
+User interacts with the GUI :
+```
+>>>
+Reading package lists... Done
+Building dependency tree       
+Reading state information... Done
+libpam-pwquality is already the newest version (1.4.0-9ubuntu2).
+libpam-cracklib is already the newest version (1.4.0-9ubuntu2).
+0 upgraded, 0 newly installed, 0 to remove and 0 not upgraded.
+minlen = 12
+minclass = 3
+maxrepeat = 2
+maxsequence = 4
+reject_username
+enforce_for_root
+Password policies have been configured.
+```
+
+Audit Logging is responsible for the detection of suspicious behaviour.A name.log file would be created which contains all the necessary audited records
+```
+>>>
+Audit logging has been enabled and configured.
+You can review audit logs in /var/log/audit/audit.log.
+
+```
+
+Example of a audit.log file :
+```
+type=SYSCALL msg=audit(1632717845.012:123): arch=c000003e syscall=2 success=yes exit=3 a0=7fffaa06eb3d a1=0 a2=1 a3=0 items=2 ppid=1234 pid=5678 auid=1000 uid=1000 gid=1000 euid=0 suid=0 fsuid=0 egid=1000 sgid=1000 fsgid=1000 tty=(none) ses=1 comm="open" exe="/usr/bin/cat" key="file_access"
+
+type=CWD msg=audit(1632717845.012:123):  cwd="/home/user/documents"
+
+type=PATH msg=audit(1632717845.012:123): item=0 name="/etc/passwd" inode=12345 dev=08:01 mode=0100644 ouid=0 ogid=0 rdev=00:00 nametype=NORMAL cap_fp=0 cap_fi=0 cap_fe=0 cap_fver=0
+
+type=PATH msg=audit(1632717845.012:123): item=1 name="/etc/shadow" inode=54321 dev=08:01 mode=0100400 ouid=0 ogid=0 rdev=00:00 nametype=NORMAL cap_fp=0 cap_fi=0 cap_fe=0 cap_fver=0
+
+
+```
