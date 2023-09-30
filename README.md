@@ -1,5 +1,5 @@
 
-# GUI Based Hardening of Organisational Security Policies
+# SentinelX : GUI Based Hardening of Organisational Security Policies
 
 Enhance OS security through intuitive hardening procedures compliant with organizational policies, prioritizing user experience and interface
 
