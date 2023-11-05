@@ -37,7 +37,8 @@ With features such as Patch Management,Port Protection,Firewall Configuration Ma
 - Audit Logging: Enable and configure audit logging to monitor system activities and detect suspicious behavior.
      - Implemented with `auditd` utility software
 
-
+## Design Progress
+![Design Flow]( https://raw.githubusercontent.com/018Peach/Ubuntu-Hardening/main/Assets/Design%20Progess%201.png)
 
 
 ## Usage/Examples
